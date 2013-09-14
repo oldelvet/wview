@@ -937,9 +937,6 @@ ARCHIVE_PKT *computedDataGenerateArchive (WVIEWD_WORK *work)
         ArcRecStore.value[DATA_INDEX_windGust]   = 0;
     }
 
-    // save the high wind speed in the loop packet
-    work->loopPkt.windGust = (uint16_t)ArcRecStore.value[DATA_INDEX_windGust];
-
     ArcRecStore.value[DATA_INDEX_dewpoint]       =
         wvutilsCalculateDewpoint ((float)ArcRecStore.value[DATA_INDEX_outTemp],
                                   (float)ArcRecStore.value[DATA_INDEX_outHumidity]);
