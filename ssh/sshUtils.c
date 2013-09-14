@@ -264,7 +264,9 @@ int sshUtilsSendFiles (SSH_ID id, char *workdir)
         if (chdir(workdir) == -1)
         {
             radMsgLog (PRI_HIGH, "SSH: chdir failed: %s", strerror(errno));
-            return ERROR;
+            // Others may work so continue
+            rule->currentCount = rule->interval - 1;
+            continue;
         }
     
         // Release the SIGCHLD signal so popen can do its thing:
@@ -276,7 +278,9 @@ int sshUtilsSendFiles (SSH_ID id, char *workdir)
         {
             radMsgLog (PRI_HIGH, "SSH: popen failed: %s", strerror(errno));
             radProcessSignalCatch (SIGCHLD, SSHDefaultSigHandler);
-            return ERROR;
+            // Others may work so continue
+            rule->currentCount = rule->interval - 1;
+            continue;
         }
 
         done = FALSE;
@@ -303,7 +307,9 @@ int sshUtilsSendFiles (SSH_ID id, char *workdir)
         {
             radMsgLog (PRI_HIGH, "SSH: pclose failed: %s", strerror(errno));
             radProcessSignalCatch (SIGCHLD, SSHDefaultSigHandler);
-            return ERROR;
+            // Others may work so continue
+            rule->currentCount = rule->interval - 1;
+            continue;
         }
 
         // Restore the SIGCHLD signal:
